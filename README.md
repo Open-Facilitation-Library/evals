@@ -57,13 +57,28 @@ The key mechanism: compute "signatures" of conversations based on Why-How-Who di
 | **Outcome** | Agreement level, idea quantity/quality, participant satisfaction |
 | **Signature** | Distance to target methodology, consistency within session, appropriate adaptation |
 
+## Transcript Processor
+
+A CLI tool that processes raw facilitation transcripts into anonymized, WHoW-annotated benchmarks.
+
+```bash
+npm install
+npx tsx src/process-transcript.ts --input <file> --methodology <name> --date <YYYY-MM-DD> [--facilitator <names>] [--dry-run]
+```
+
+Pipeline: **parse** (auto-detect format) → **anonymize** (names, PII) → **annotate** (gpt-4o-mini WHoW tagging) → **signature** (tag frequency vectors) → **render** (markdown + YAML frontmatter).
+
+See `src/` for implementation. Add your OpenAI key to `.env`.
+
 ## Repository Structure
 
 ```
 why-how-who-framework.md    # Full framework specification
+src/                        # Transcript processor CLI
 schemas/                    # Data schemas for evaluation results
 prompts/                    # LLM prompts for automated tagging
-benchmarks/                 # Reference datasets and methodology signatures
+benchmarks/                 # Annotated benchmark transcripts
+transcripts/                # Raw input transcripts
 ```
 
 ## Applications
@@ -72,11 +87,28 @@ benchmarks/                 # Reference datasets and methodology signatures
 - **AI training** — Generate labeled datasets and feedback signals for reinforcement learning
 - **Quality assessment** — Automated comparison of conversations to reference methodologies
 
-## References
+## Related Work
+
+### Fora Corpus (MIT, ACL 2024)
+
+[Fora](https://aclanthology.org/2024.acl-long.754/) is a corpus of 262 facilitated dialogues (39,911 turns) with human annotations for 7 facilitation strategies and 2 personal sharing types. It's the closest academic dataset to what OFL evals produces. Key differences:
+
+- **Fora** annotates facilitator strategies (follow-up questions, making connections, etc.) and participant sharing — narrower but human-validated
+- **WHoW** annotates purpose (why), technique (how), and interaction direction (who) — broader, captures dimensions Fora doesn't (purpose, directionality)
+- **Complementary**: running WHoW annotation on Fora transcripts would validate our taxonomy against human ground truth
+
+Fora data is available by request from [github.com/schropes/fora-corpus](https://github.com/schropes/fora-corpus).
+
+### ConvoKit (Cornell)
+
+[ConvoKit](https://convokit.cornell.edu/) is a toolkit for conversational analysis with a standardized corpus format (`utterances.jsonl` + `speakers.json` + `conversations.json`). Used by 30+ datasets including Fora. Future work: add ConvoKit-format export to the transcript processor for interoperability.
+
+### Other References
 
 - Joseph Low, Cooperative AI Fellowship research (2026)
 - [Why-How-Who Framework](./why-how-who-framework.md) — Full specification
 - [OFL Pattern Schema](https://github.com/Open-Facilitation-Library/skills/tree/main/patterns/schema) — Patterns include evaluation criteria
+- [WHoW Framework](https://aclanthology.org/2024.emnlp-main.1243/) — Chen et al. 2024, cross-domain moderation analysis
 - [Discussion Quality in the LLM Era](https://open-facilitation-library.github.io/synthesis-quartz/research/evaluation-facilitation-llm-era) — Korre et al. 2025
 
 ## License

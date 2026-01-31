@@ -1,0 +1,68 @@
+# Conversation Signature Vector Schema
+# Normalized frequency distributions across Why-How-Who dimensions
+
+type: object
+required: [why, how, who]
+properties:
+  why:
+    type: object
+    description: Purpose/outcome tag frequencies (sum to 1.0)
+    properties:
+      agreement-building:
+        type: number
+      ideation:
+        type: number
+      conflict-resolution:
+        type: number
+      information-sharing:
+        type: number
+      relationship-building:
+        type: number
+      perspective-taking:
+        type: number
+      synthesis:
+        type: number
+      error-surfacing:
+        type: number
+      preference-elicitation:
+        type: number
+
+  how:
+    type: object
+    description: Process/technique tag frequencies (sum to 1.0)
+    properties:
+      open-question:
+        type: number
+      closed-question:
+        type: number
+      probing-question:
+        type: number
+      clarifying-question:
+        type: number
+      paraphrase:
+        type: number
+      summary:
+        type: number
+      redirect:
+        type: number
+      encouragement:
+        type: number
+      challenge:
+        type: number
+      time-management:
+        type: number
+      instruction:
+        type: number
+
+  who:
+    type: object
+    description: Interaction direction frequencies (sum to 1.0)
+    properties:
+      facilitator-to-group:
+        type: number
+      facilitator-to-individual:
+        type: number
+      participant-to-facilitator:
+        type: number
+      participant-to-participant:
+        type: number

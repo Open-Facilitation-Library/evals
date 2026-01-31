@@ -1,0 +1,18 @@
+{
+  "name": "ofl-evals",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "process": "tsx src/process-transcript.ts"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "openai": "^4.77.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

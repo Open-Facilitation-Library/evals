@@ -136,9 +136,13 @@ This relative comparison is more tractable and produces measurable feedback sign
 - Joseph Low, Cooperative AI Fellowship research (2026)
 - OFL Substack publications
 - Conversation Networks paper (referenced in AI Facilitation Sync meetings)
+- [Fora: A Corpus and Framework for the Study of Facilitated Dialogue](https://aclanthology.org/2024.acl-long.754/) — Schroeder, Roy & Kabbara, ACL 2024. 262 facilitated dialogues with human annotations for 7 facilitation strategies and 2 sharing types. Complementary to WHoW: Fora captures *what* facilitators do (strategies) and *what* participants share, while WHoW captures *why* (purpose), *how* (technique), and *who* (interaction direction).
+- [WHoW: A Cross-domain Approach for Analysing Conversation Moderation](https://aclanthology.org/2024.emnlp-main.1243/) — Chen et al. 2024. Academic framework sharing the Why-How-Who naming convention, applied to TV debates and panel discussions.
+- [ConvoKit](https://convokit.cornell.edu/) — Cornell conversational analysis toolkit with standardized corpus format. Fora is available as a ConvoKit corpus.
 
 ## Related Resources
 
 - [Pattern Schema](https://github.com/Open-Facilitation-Library/skills/tree/main/patterns/schema)
 - [Cross-Pollination Pattern](https://github.com/Open-Facilitation-Library/cross-pollination)
 - [Evaluation Prompts](./prompts/)
+- [Fora Corpus — access request](https://github.com/schropes/fora-corpus)

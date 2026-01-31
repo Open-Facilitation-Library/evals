@@ -1,0 +1,60 @@
+# Annotated Benchmark Transcript Schema
+# YAML frontmatter format for benchmark transcript files
+
+type: object
+required: [methodology, date, participants, turns, facilitator, signature, transcript]
+properties:
+  methodology:
+    type: string
+    description: Facilitation methodology name (e.g., "dynamic-facilitation")
+
+  date:
+    type: string
+    format: date
+    description: Session date (YYYY-MM-DD)
+
+  participants:
+    type: integer
+    description: Number of unique participants (excluding facilitator)
+
+  turns:
+    type: integer
+    description: Total number of dialogue turns
+
+  facilitator:
+    type: string
+    description: Anonymized facilitator label (always "Facilitator")
+
+  signature:
+    $ref: "./signature.schema.yaml"
+    description: Computed conversation signature vector
+
+  transcript:
+    type: array
+    items:
+      type: object
+      required: [speaker, text, tags]
+      properties:
+        speaker:
+          type: string
+          description: Anonymized speaker label
+        text:
+          type: string
+          description: Turn content (PII removed)
+        timestamp:
+          type: string
+          description: Original timestamp if available
+        tags:
+          type: object
+          required: [why, how, who]
+          properties:
+            why:
+              type: array
+              items:
+                type: string
+            how:
+              type: array
+              items:
+                type: string
+            who:
+              type: string
