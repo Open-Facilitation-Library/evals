@@ -64,5 +64,5 @@ Each turn gets ONE `who`, ONE+ `why`, ONE+ `how`.
 ## Related Projects
 
 - **Fora Corpus** (MIT, ACL 2024) — 262 facilitated dialogues with human annotations. Complementary scheme: they annotate facilitator strategies + participant sharing; we annotate purpose, technique, and interaction direction. Access: github.com/schropes/fora-corpus
-- **ConvoKit** (Cornell) — Standard corpus format (`utterances.jsonl` + `speakers.json`). Future export target for interoperability.
+- **ConvoKit** (Cornell) — Python toolkit for conversational analysis with standardized corpus format (`utterances.jsonl` + `speakers.json`). Our pipeline handles the upstream problem ConvoKit doesn't (raw transcript → structured annotated corpus); ConvoKit handles downstream analysis. Relevant built-in transformers: Politeness Strategies (facilitator tone), Linguistic Coordination (rapport signals), CRAFT Forecasting (derailment prediction), Redirection detection (overlaps with our `redirect` tag), Linguistic Diversity (speaker variation). Future export target for interoperability.
 - **OFL synthesis-quartz** — Documentation site where evals framework is published

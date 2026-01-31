@@ -101,7 +101,16 @@ Fora data is available by request from [github.com/schropes/fora-corpus](https:/
 
 ### ConvoKit (Cornell)
 
-[ConvoKit](https://convokit.cornell.edu/) is a toolkit for conversational analysis with a standardized corpus format (`utterances.jsonl` + `speakers.json` + `conversations.json`). Used by 30+ datasets including Fora. Future work: add ConvoKit-format export to the transcript processor for interoperability.
+[ConvoKit](https://github.com/CornellNLP/ConvoKit) is a Python toolkit for conversational analysis with a standardized corpus format and built-in analysis transformers. Used by 30+ datasets including Fora.
+
+Relevant analysis tools that would work on our data if we export in ConvoKit format:
+- **Politeness Strategies** — lexical/parse-based politeness scoring (facilitator tone measurement)
+- **Linguistic Coordination** — measures whether participants mirror facilitator language (rapport signal)
+- **CRAFT Forecasting** — predicts conversation derailment (evaluates whether facilitation prevents breakdown)
+- **Redirection detection** — built-in tool for what our `redirect` tag captures
+- **Linguistic Diversity** — quantifies speaker variation within conversations
+
+Our pipeline handles the upstream problem ConvoKit doesn't: raw transcript → structured annotated corpus. ConvoKit handles the downstream analysis. Adding ConvoKit-format export would make all these tools available on our benchmarks.
 
 ### Other References
 
