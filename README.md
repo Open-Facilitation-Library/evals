@@ -112,6 +112,15 @@ Relevant analysis tools that would work on our data if we export in ConvoKit for
 
 Our pipeline handles the upstream problem ConvoKit doesn't: raw transcript → structured annotated corpus. ConvoKit handles the downstream analysis. Adding ConvoKit-format export would make all these tools available on our benchmarks.
 
+### weval (Collective Intelligence Project)
+
+[weval](https://weval.org) is an open, CC0 platform for public AI evals: evals are written as **blueprints** — YAML pairing prompts with `should`/`should_not` rubrics, scored by LLM-as-judge with multi-judge consensus and inter-rater reliability (Krippendorff's α). Two ways it connects to OFL evals:
+
+- **Format (interop target).** A Why-How-Who facilitation eval can be expressed as a weval blueprint — making OFL evals runnable on weval-shaped infrastructure, not just this pipeline. Planned interop direction (the eval-side analog of a ConvoKit export).
+- **Judge calibration.** weval's [methodology](https://github.com/weval-org/app/blob/main/docs/METHODOLOGY.md) — consensus judging + Krippendorff's α reliability bands + bias countermeasures — is prior art for grounding any LLM-as-judge scoring added here.
+
+CIP run weval and have been a proposed validation partner for the OFL eval suite. See the [weval wiki page](https://wiki.openfac.org/evals/weval) and the [blueprint format](https://github.com/weval-org/app/blob/main/docs/BLUEPRINT_FORMAT.md).
+
 ### Other References
 
 - Joseph Low, Cooperative AI Fellowship research (2026)
