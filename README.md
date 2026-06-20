@@ -70,6 +70,15 @@ Pipeline: **parse** (auto-detect format) → **anonymize** (names, PII) → **an
 
 See `src/` for implementation. Add your OpenAI key to `.env`.
 
+## Judge Calibration
+
+Signatures are comparative, but some quality questions still reduce to a judgment ("is this a good
+*close*?"). Where an LLM-as-judge scores such an axis, it needs grounding in expert taste — the
+gap the [weval](#weval-collective-intelligence-project) methodology addresses. [`calibration/`](./calibration/)
+holds real, anonymized facilitation turns + the rubric criterion in plain English, for expert
+facilitators to label good / weak. Those labels recalibrate the judge so it scores like an expert,
+not a model default. First pack: the closing-turn axis.
+
 ## Repository Structure
 
 ```
@@ -79,6 +88,7 @@ schemas/                    # Data schemas for evaluation results
 prompts/                    # LLM prompts for automated tagging
 benchmarks/                 # Annotated benchmark transcripts
 transcripts/                # Raw input transcripts
+calibration/                # Human labels calibrating LLM-as-judge to expert taste
 ```
 
 ## Applications
