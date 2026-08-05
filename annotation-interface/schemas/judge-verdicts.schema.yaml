@@ -1,0 +1,62 @@
+# JudgeVerdicts — an LLM judge's scores over the same pack, for human↔judge comparison.
+# OFL Annotation & Calibration Interface v0.1 draft — see ../README.md
+
+type: object
+required: [spec_version, pack_id, judge, verdicts]
+properties:
+  spec_version:
+    type: string
+
+  pack_id:
+    type: string
+
+  judge:
+    type: object
+    required: [fingerprint]
+    description: >
+      Deterministic identity of the judge configuration (weval judgeSetFingerprint
+      precedent). A report is only comparable across runs while the fingerprint holds.
+    properties:
+      fingerprint:
+        type: string
+        description: Hash of model id + judge prompt + few-shot examples + temperature
+      model:
+        type: string
+        description: Human-readable model id (e.g. "anthropic:claude-sonnet-4-6")
+      prompt_ref:
+        type: string
+        description: Where the judge prompt lives (repo path or blueprint ref)
+      calibration_examples:
+        type: string
+        description: >
+          Which split the few-shot examples came from. MUST be the training split
+          only — dev/test examples in the judge prompt contaminate every TPR/TNR
+          measurement downstream.
+
+  scored_at:
+    type: string
+    format: date-time
+
+  verdicts:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required: [record_id, axis, score]
+      properties:
+        record_id: { type: string }
+        axis: { type: string }
+        score:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: The judge's continuous score
+        verdict:
+          type: string
+          enum: [pass, fail]
+          description: Binarized verdict when a threshold has been applied
+        threshold:
+          type: number
+          description: The pass threshold used for binarization, when applicable
+        rationale:
+          type: string
