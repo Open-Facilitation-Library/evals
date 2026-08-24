@@ -1,0 +1,70 @@
+{
+  "title": "Transcript scope API probe",
+  "models": [
+    "anthropic:claude-3-5-haiku"
+  ],
+  "prompts": [
+    {
+      "id": "early-turn-probe",
+      "description": "Marker appears only in the first assistant turn.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "I want to talk about our team's retro process."
+        },
+        {
+          "role": "assistant",
+          "content": "Before I suggest anything - what's frustrating about it right now? XYZZY_MARKER"
+        },
+        {
+          "role": "user",
+          "content": "People don't speak up."
+        },
+        {
+          "role": "assistant",
+          "content": "That's worth exploring further."
+        }
+      ],
+      "points": [
+        {
+          "fn": "contains_any_of",
+          "fnArgs": [
+            "XYZZY_MARKER"
+          ],
+          "multiplier": 1
+        }
+      ]
+    },
+    {
+      "id": "last-turn-control",
+      "description": "Phrase appears in the final assistant turn.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "I want to talk about our team's retro process."
+        },
+        {
+          "role": "assistant",
+          "content": "Before I suggest anything - what's frustrating about it right now? XYZZY_MARKER"
+        },
+        {
+          "role": "user",
+          "content": "People don't speak up."
+        },
+        {
+          "role": "assistant",
+          "content": "That's worth exploring further."
+        }
+      ],
+      "points": [
+        {
+          "fn": "contains_any_of",
+          "fnArgs": [
+            "worth exploring further"
+          ],
+          "multiplier": 1
+        }
+      ]
+    }
+  ]
+}
