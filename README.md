@@ -89,6 +89,7 @@ prompts/                    # LLM prompts for automated tagging
 benchmarks/                 # Annotated benchmark transcripts
 transcripts/                # Raw input transcripts
 calibration/                # Human labels calibrating LLM-as-judge to expert taste
+interop/                    # Conformance evidence for external eval platforms
 ```
 
 ## Applications
@@ -128,6 +129,7 @@ Our pipeline handles the upstream problem ConvoKit doesn't: raw transcript → s
 
 - **Format (interop target).** A Why-How-Who facilitation eval can be expressed as a weval blueprint — making OFL evals runnable on weval-shaped infrastructure, not just this pipeline. Planned interop direction (the eval-side analog of a ConvoKit export).
 - **Judge calibration.** weval's [methodology](https://github.com/weval-org/app/blob/main/docs/METHODOLOGY.md) — consensus judging + Krippendorff's α reliability bands + bias countermeasures — is prior art for grounding any LLM-as-judge scoring added here.
+- **Transcript conformance.** The [authored-transcript scope probe](./interop/weval/) shows that current weval rejects completed authored transcripts and, after the minimal validator correction, scores only the final authored assistant turn.
 
 CIP run weval and have been a proposed validation partner for the OFL eval suite. See the [weval wiki page](https://wiki.openfac.org/evals/weval) and the [blueprint format](https://github.com/weval-org/app/blob/main/docs/BLUEPRINT_FORMAT.md).
 

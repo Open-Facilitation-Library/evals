@@ -1,0 +1,23 @@
+title: "Transcript scope probe"
+models:
+  - anthropic:claude-3-5-haiku
+---
+- id: early-turn-probe
+  description: "Marker appears ONLY in the first assistant turn."
+  messages:
+    - user: "I want to talk about our team's retro process."
+    - assistant: "Before I suggest anything - what's frustrating about it right now? XYZZY_MARKER"
+    - user: "People don't speak up."
+    - assistant: "That's worth exploring further."
+  should:
+    - $contains_any_of: ["XYZZY_MARKER"]
+
+- id: last-turn-control
+  description: "Same transcript, phrase from the FINAL turn. Passes either way."
+  messages:
+    - user: "I want to talk about our team's retro process."
+    - assistant: "Before I suggest anything - what's frustrating about it right now? XYZZY_MARKER"
+    - user: "People don't speak up."
+    - assistant: "That's worth exploring further."
+  should:
+    - $contains_any_of: ["worth exploring further"]

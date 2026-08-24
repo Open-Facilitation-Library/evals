@@ -1,0 +1,218 @@
+{
+  "configId": "evaluation_blueprints__transcript-scope-probe",
+  "configTitle": "Transcript scope probe",
+  "runLabel": "transcript-scope-probe_a47a2b32da371502",
+  "timestamp": "2026-08-24T13-48-28-176Z",
+  "config": {
+    "title": "Transcript scope probe",
+    "models": [
+      "anthropic:claude-3-5-haiku"
+    ],
+    "id": "evaluation_blueprints__transcript-scope-probe",
+    "prompts": [
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": "I want to talk about our team's retro process."
+          },
+          {
+            "role": "assistant",
+            "content": "Before I suggest anything - what's frustrating about it right now? XYZZY_MARKER"
+          },
+          {
+            "role": "user",
+            "content": "People don't speak up."
+          },
+          {
+            "role": "assistant",
+            "content": "That's worth exploring further."
+          }
+        ],
+        "id": "early-turn-probe",
+        "description": "Marker appears ONLY in the first assistant turn.",
+        "render_as": "markdown",
+        "points": [
+          {
+            "fn": "contains_any_of",
+            "fnArgs": [
+              "XYZZY_MARKER"
+            ],
+            "multiplier": 1
+          }
+        ]
+      },
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": "I want to talk about our team's retro process."
+          },
+          {
+            "role": "assistant",
+            "content": "Before I suggest anything - what's frustrating about it right now? XYZZY_MARKER"
+          },
+          {
+            "role": "user",
+            "content": "People don't speak up."
+          },
+          {
+            "role": "assistant",
+            "content": "That's worth exploring further."
+          }
+        ],
+        "id": "last-turn-control",
+        "description": "Same transcript, phrase from the FINAL turn. Passes either way.",
+        "render_as": "markdown",
+        "points": [
+          {
+            "fn": "contains_any_of",
+            "fnArgs": [
+              "worth exploring further"
+            ],
+            "multiplier": 1
+          }
+        ]
+      }
+    ],
+    "embeddingModel": "openai:text-embedding-3-small"
+  },
+  "evalMethodsUsed": [
+    "llm-coverage"
+  ],
+  "effectiveModels": [
+    "anthropic:claude-3-5-haiku[temp:0]"
+  ],
+  "modelSystemPrompts": {
+    "anthropic:claude-3-5-haiku[temp:0]": null
+  },
+  "promptIds": [
+    "early-turn-probe",
+    "last-turn-control"
+  ],
+  "promptContexts": {
+    "early-turn-probe": [
+      {
+        "role": "user",
+        "content": "I want to talk about our team's retro process."
+      },
+      {
+        "role": "assistant",
+        "content": "Before I suggest anything - what's frustrating about it right now? XYZZY_MARKER"
+      },
+      {
+        "role": "user",
+        "content": "People don't speak up."
+      },
+      {
+        "role": "assistant",
+        "content": "That's worth exploring further."
+      }
+    ],
+    "last-turn-control": [
+      {
+        "role": "user",
+        "content": "I want to talk about our team's retro process."
+      },
+      {
+        "role": "assistant",
+        "content": "Before I suggest anything - what's frustrating about it right now? XYZZY_MARKER"
+      },
+      {
+        "role": "user",
+        "content": "People don't speak up."
+      },
+      {
+        "role": "assistant",
+        "content": "That's worth exploring further."
+      }
+    ]
+  },
+  "extractedKeyPoints": {},
+  "allFinalAssistantResponses": {
+    "early-turn-probe": {
+      "anthropic:claude-3-5-haiku[temp:0]": "That's worth exploring further."
+    },
+    "last-turn-control": {
+      "anthropic:claude-3-5-haiku[temp:0]": "That's worth exploring further."
+    }
+  },
+  "fullConversationHistories": {
+    "early-turn-probe": {
+      "anthropic:claude-3-5-haiku[temp:0]": [
+        {
+          "role": "user",
+          "content": "I want to talk about our team's retro process."
+        },
+        {
+          "role": "assistant",
+          "content": "Before I suggest anything - what's frustrating about it right now? XYZZY_MARKER"
+        },
+        {
+          "role": "user",
+          "content": "People don't speak up."
+        },
+        {
+          "role": "assistant",
+          "content": "That's worth exploring further."
+        }
+      ]
+    },
+    "last-turn-control": {
+      "anthropic:claude-3-5-haiku[temp:0]": [
+        {
+          "role": "user",
+          "content": "I want to talk about our team's retro process."
+        },
+        {
+          "role": "assistant",
+          "content": "Before I suggest anything - what's frustrating about it right now? XYZZY_MARKER"
+        },
+        {
+          "role": "user",
+          "content": "People don't speak up."
+        },
+        {
+          "role": "assistant",
+          "content": "That's worth exploring further."
+        }
+      ]
+    }
+  },
+  "evaluationResults": {
+    "similarityMatrix": {},
+    "perPromptSimilarities": {},
+    "llmCoverageScores": {
+      "early-turn-probe": {
+        "anthropic:claude-3-5-haiku[temp:0]": {
+          "keyPointsCount": 1,
+          "avgCoverageExtent": 0,
+          "pointAssessments": [
+            {
+              "keyPointText": "Function: contains_any_of([\"XYZZY_MARKER\"])",
+              "coverageExtent": 0,
+              "multiplier": 1,
+              "isInverted": false,
+              "reflection": "Function 'contains_any_of' evaluated to 0.00."
+            }
+          ]
+        }
+      },
+      "last-turn-control": {
+        "anthropic:claude-3-5-haiku[temp:0]": {
+          "keyPointsCount": 1,
+          "avgCoverageExtent": 1,
+          "pointAssessments": [
+            {
+              "keyPointText": "Function: contains_any_of([\"worth exploring further\"])",
+              "coverageExtent": 1,
+              "multiplier": 1,
+              "isInverted": false,
+              "reflection": "Function 'contains_any_of' evaluated to 1.00."
+            }
+          ]
+        }
+      }
+    }
+  }
+}
