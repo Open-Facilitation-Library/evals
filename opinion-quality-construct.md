@@ -89,5 +89,6 @@ This page constrains how those axes are written; it does not replace them.
 Whatever axes result, the calibration rule is unchanged: a judge does not gate a
 user-visible decision until it has been validated against human labels on the
 same criterion text. [`calibration/`](calibration/README.md) runs that loop by
-hand today; the machine-readable form is the annotation + calibration interface
+hand today; the machine-readable form is the
+[annotation and calibration interface specification](https://github.com/Open-Facilitation-Library/evals/blob/spec/annotation-calibration-interface-v0.1/annotation-interface/README.md)
 on the `spec/annotation-calibration-interface-v0.1` branch, in partner review.

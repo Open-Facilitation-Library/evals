@@ -267,8 +267,9 @@ need several turns, while a format criterion may need one. A useful contract
 therefore needs an explicit target or context-window designation.
 
 This finding complements the draft
-`spec/annotation-calibration-interface-v0.1` branch. That specification already
-identifies human annotation exchange, real-session ingestion, and
+[annotation and calibration interface specification](https://github.com/Open-Facilitation-Library/evals/blob/spec/annotation-calibration-interface-v0.1/annotation-interface/README.md)
+on the `spec/annotation-calibration-interface-v0.1` branch. That specification
+already identifies human annotation exchange, real-session ingestion, and
 judge-versus-human validity reporting as layers OFL needs around Weval. This
 probe supplies a concrete conformance boundary for evaluation-unit selection
 and an API-shaped payload for testing real-session ingestion.
