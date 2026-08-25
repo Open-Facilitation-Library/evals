@@ -1,7 +1,6 @@
 # Weval Transcript-Scope Conformance Probe
 
 Date: 2026-08-24  
-Source investigation: Harmonica HAR-1629  
 Weval revision tested: `weval-org/app@26f5a98804d7ba4da17f1a9d92f8ed72784bec6c`  
 Blueprint documentation blob: `85d12927c5c46d39f34a30645e060a149794229b`
 
