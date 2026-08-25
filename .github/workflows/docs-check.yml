@@ -1,4 +1,4 @@
-name: Documentation checks
+name: Documentation branch links
 
 on:
   pull_request:
@@ -11,10 +11,4 @@ permissions:
 
 jobs:
   branch-links:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - run: npm run check:docs
+    uses: Open-Facilitation-Library/.github/.github/workflows/clickable-branch-references.yml@main

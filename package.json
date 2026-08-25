@@ -4,7 +4,6 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "check:docs": "node scripts/check-doc-links.mjs",
     "process": "tsx src/process-transcript.ts"
   },
   "dependencies": {
