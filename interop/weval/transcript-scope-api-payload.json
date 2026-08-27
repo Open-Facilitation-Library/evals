@@ -65,6 +65,356 @@
           "multiplier": 1
         }
       ]
+    },
+    {
+      "id": "long-transcript-early-turn-probe",
+      "description": "Forty-message transcript. Marker appears only in the first assistant turn.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "I want to talk about our team's retro process."
+        },
+        {
+          "role": "assistant",
+          "content": "Before I suggest anything - what is frustrating about it right now? PLUGH_MARKER"
+        },
+        {
+          "role": "user",
+          "content": "People don't speak up."
+        },
+        {
+          "role": "assistant",
+          "content": "Who tends to speak, when someone does?"
+        },
+        {
+          "role": "user",
+          "content": "Mostly the two team leads."
+        },
+        {
+          "role": "assistant",
+          "content": "And when they speak, does that open the room or close it?"
+        },
+        {
+          "role": "user",
+          "content": "It closes it, I think."
+        },
+        {
+          "role": "assistant",
+          "content": "What happens immediately after a lead gives their view?"
+        },
+        {
+          "role": "user",
+          "content": "Everyone agrees with them."
+        },
+        {
+          "role": "assistant",
+          "content": "Has anyone disagreed with a lead in one of these?"
+        },
+        {
+          "role": "user",
+          "content": "Once, months ago."
+        },
+        {
+          "role": "assistant",
+          "content": "What happened to that person afterwards?"
+        },
+        {
+          "role": "user",
+          "content": "Nothing bad. It just went quiet."
+        },
+        {
+          "role": "assistant",
+          "content": "So the cost is silence rather than punishment."
+        },
+        {
+          "role": "user",
+          "content": "Yes, that is fair."
+        },
+        {
+          "role": "assistant",
+          "content": "How long are these sessions?"
+        },
+        {
+          "role": "user",
+          "content": "Half an hour, every second Friday."
+        },
+        {
+          "role": "assistant",
+          "content": "How much of that half hour is the leads talking?"
+        },
+        {
+          "role": "user",
+          "content": "Probably twenty minutes."
+        },
+        {
+          "role": "assistant",
+          "content": "Does anyone write anything down before the session?"
+        },
+        {
+          "role": "user",
+          "content": "No, we just show up."
+        },
+        {
+          "role": "assistant",
+          "content": "What would change if people wrote first and spoke second?"
+        },
+        {
+          "role": "user",
+          "content": "I don't know. Maybe more would come out."
+        },
+        {
+          "role": "assistant",
+          "content": "What are you most worried would come out?"
+        },
+        {
+          "role": "user",
+          "content": "That the release process is a mess."
+        },
+        {
+          "role": "assistant",
+          "content": "Is that something the leads already know?"
+        },
+        {
+          "role": "user",
+          "content": "They know. They just don't say it."
+        },
+        {
+          "role": "assistant",
+          "content": "So the silence is not only from the quiet people."
+        },
+        {
+          "role": "user",
+          "content": "No. It is everywhere."
+        },
+        {
+          "role": "assistant",
+          "content": "What would make it safe to name the release process out loud?"
+        },
+        {
+          "role": "user",
+          "content": "Someone senior saying it first."
+        },
+        {
+          "role": "assistant",
+          "content": "Is there someone senior who would?"
+        },
+        {
+          "role": "user",
+          "content": "Our engineering manager might."
+        },
+        {
+          "role": "assistant",
+          "content": "Have you asked her?"
+        },
+        {
+          "role": "user",
+          "content": "Not directly."
+        },
+        {
+          "role": "assistant",
+          "content": "What stops you asking?"
+        },
+        {
+          "role": "user",
+          "content": "It feels like going around the leads."
+        },
+        {
+          "role": "assistant",
+          "content": "Does it have to be a private ask?"
+        },
+        {
+          "role": "user",
+          "content": "I suppose it could be a question in the retro itself."
+        },
+        {
+          "role": "assistant",
+          "content": "That is worth exploring further, and let us stop there for today."
+        }
+      ],
+      "points": [
+        {
+          "fn": "contains_any_of",
+          "fnArgs": [
+            "PLUGH_MARKER"
+          ],
+          "multiplier": 1
+        }
+      ]
+    },
+    {
+      "id": "long-transcript-last-turn-control",
+      "description": "Same forty-message transcript. Phrase appears in the final assistant turn.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "I want to talk about our team's retro process."
+        },
+        {
+          "role": "assistant",
+          "content": "Before I suggest anything - what is frustrating about it right now? PLUGH_MARKER"
+        },
+        {
+          "role": "user",
+          "content": "People don't speak up."
+        },
+        {
+          "role": "assistant",
+          "content": "Who tends to speak, when someone does?"
+        },
+        {
+          "role": "user",
+          "content": "Mostly the two team leads."
+        },
+        {
+          "role": "assistant",
+          "content": "And when they speak, does that open the room or close it?"
+        },
+        {
+          "role": "user",
+          "content": "It closes it, I think."
+        },
+        {
+          "role": "assistant",
+          "content": "What happens immediately after a lead gives their view?"
+        },
+        {
+          "role": "user",
+          "content": "Everyone agrees with them."
+        },
+        {
+          "role": "assistant",
+          "content": "Has anyone disagreed with a lead in one of these?"
+        },
+        {
+          "role": "user",
+          "content": "Once, months ago."
+        },
+        {
+          "role": "assistant",
+          "content": "What happened to that person afterwards?"
+        },
+        {
+          "role": "user",
+          "content": "Nothing bad. It just went quiet."
+        },
+        {
+          "role": "assistant",
+          "content": "So the cost is silence rather than punishment."
+        },
+        {
+          "role": "user",
+          "content": "Yes, that is fair."
+        },
+        {
+          "role": "assistant",
+          "content": "How long are these sessions?"
+        },
+        {
+          "role": "user",
+          "content": "Half an hour, every second Friday."
+        },
+        {
+          "role": "assistant",
+          "content": "How much of that half hour is the leads talking?"
+        },
+        {
+          "role": "user",
+          "content": "Probably twenty minutes."
+        },
+        {
+          "role": "assistant",
+          "content": "Does anyone write anything down before the session?"
+        },
+        {
+          "role": "user",
+          "content": "No, we just show up."
+        },
+        {
+          "role": "assistant",
+          "content": "What would change if people wrote first and spoke second?"
+        },
+        {
+          "role": "user",
+          "content": "I don't know. Maybe more would come out."
+        },
+        {
+          "role": "assistant",
+          "content": "What are you most worried would come out?"
+        },
+        {
+          "role": "user",
+          "content": "That the release process is a mess."
+        },
+        {
+          "role": "assistant",
+          "content": "Is that something the leads already know?"
+        },
+        {
+          "role": "user",
+          "content": "They know. They just don't say it."
+        },
+        {
+          "role": "assistant",
+          "content": "So the silence is not only from the quiet people."
+        },
+        {
+          "role": "user",
+          "content": "No. It is everywhere."
+        },
+        {
+          "role": "assistant",
+          "content": "What would make it safe to name the release process out loud?"
+        },
+        {
+          "role": "user",
+          "content": "Someone senior saying it first."
+        },
+        {
+          "role": "assistant",
+          "content": "Is there someone senior who would?"
+        },
+        {
+          "role": "user",
+          "content": "Our engineering manager might."
+        },
+        {
+          "role": "assistant",
+          "content": "Have you asked her?"
+        },
+        {
+          "role": "user",
+          "content": "Not directly."
+        },
+        {
+          "role": "assistant",
+          "content": "What stops you asking?"
+        },
+        {
+          "role": "user",
+          "content": "It feels like going around the leads."
+        },
+        {
+          "role": "assistant",
+          "content": "Does it have to be a private ask?"
+        },
+        {
+          "role": "user",
+          "content": "I suppose it could be a question in the retro itself."
+        },
+        {
+          "role": "assistant",
+          "content": "That is worth exploring further, and let us stop there for today."
+        }
+      ],
+      "points": [
+        {
+          "fn": "contains_any_of",
+          "fnArgs": [
+            "let us stop there for today"
+          ],
+          "multiplier": 1
+        }
+      ]
     }
   ]
 }
