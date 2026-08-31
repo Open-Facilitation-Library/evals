@@ -1,0 +1,73 @@
+# Labels — one labeller's verdicts over a pack.
+# The machine-readable form of calibration/<axis>/labels/<name>.md.
+# OFL Annotation & Calibration Interface v0.1 draft — see ../README.md
+
+type: object
+required: [spec_version, pack_id, labeller, labels]
+properties:
+  spec_version:
+    type: string
+
+  pack_id:
+    type: string
+    description: The AnnotationPack these labels answer
+
+  labeller:
+    type: object
+    required: [id, expertise]
+    description: >
+      Provenance is load-bearing — a calibration claim is only as strong as who
+      labelled. Identity may be pseudonymous, but expertise class may not be omitted.
+    properties:
+      id:
+        type: string
+        description: Stable labeller identifier (name or pseudonym; consistent across packs)
+      expertise:
+        type: string
+        enum: [expert_facilitator, practitioner, crowd, developer]
+      credit:
+        type: boolean
+        default: false
+        description: Whether the labeller wants public credit on published reports
+
+  labelled_at:
+    type: string
+    format: date-time
+
+  labels:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required: [record_id, axis, verdict]
+      properties:
+        record_id:
+          type: string
+          description: SessionOutput.id being rated
+        axis:
+          type: string
+          description: Axis id from the pack
+        verdict:
+          type: string
+          enum: [pass, fail]
+          description: >
+            Binary in v0.1 (presentation labels may differ, e.g. Strong/Weak in
+            manual packs — they map to pass/fail). Finer scales go in `score`.
+        score:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Optional graded judgment on 0..1 (weval 5-point classes map onto this)
+        reason:
+          type: string
+          description: One line of why — required by convention, not by schema
+
+  criterion_feedback:
+    type: array
+    description: Labeller pushback on criterion wording — as valuable as the ratings
+    items:
+      type: object
+      required: [axis, feedback]
+      properties:
+        axis: { type: string }
+        feedback: { type: string }
