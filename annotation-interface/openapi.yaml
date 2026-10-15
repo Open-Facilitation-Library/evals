@@ -1,0 +1,154 @@
+openapi: 3.1.0
+info:
+  title: OFL Annotation & Calibration Service API
+  version: 0.1.0-draft
+  description: >
+    The L1 (bridge) profile of the OFL Annotation & Calibration Interface.
+    One OFL-hosted service; platforms push packs and judge verdicts, pull labels
+    and calibration reports. Labellers enter via per-pack magic links and use the
+    shared labelling UI. Spec license CC0; pack data licensed per pack.
+    DRAFT — see README.md in this directory.
+servers:
+  - url: https://TBD.openfac.org/api
+    description: Reference service (hosting under governance discussion — deliberately unresolved in v0.1)
+
+security:
+  - platformKey: []
+
+components:
+  securitySchemes:
+    platformKey:
+      type: apiKey
+      in: header
+      name: X-OFL-Platform-Key
+      description: Issued per participating platform
+  schemas:
+    AnnotationPack:
+      description: See schemas/annotation-pack.schema.yaml (JSON form of the YAML schema)
+      type: object
+    Labels:
+      description: See schemas/labels.schema.yaml
+      type: object
+    JudgeVerdicts:
+      description: See schemas/judge-verdicts.schema.yaml
+      type: object
+    CalibrationReport:
+      description: See schemas/calibration-report.schema.yaml
+      type: object
+    Error:
+      type: object
+      required: [error, message]
+      properties:
+        error: { type: string, enum: [unauthorized, forbidden, not_found, validation_error, conflict] }
+        message: { type: string }
+
+paths:
+  /v0/packs:
+    post:
+      summary: Submit an annotation pack
+      description: >
+        Platform pushes a conforming AnnotationPack. The service validates against
+        the schema (including scrub attestation + consent posture presence) and
+        rejects with validation_error otherwise. Resubmitting the same pack id is
+        a conflict — packs are immutable once labelling has begun.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AnnotationPack' }
+      responses:
+        '201':
+          description: Pack stored; labelling magic link issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pack_id: { type: string }
+                  labelling_url: { type: string, description: Magic link to hand to labellers }
+        '400': { description: Schema or consent validation failed, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+        '409': { description: Pack id exists with labels attached, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+
+  /v0/packs/{packId}:
+    get:
+      summary: Fetch a pack
+      parameters:
+        - { name: packId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: The pack
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AnnotationPack' }
+        '404': { description: Unknown pack, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+
+  /v0/packs/{packId}/labels:
+    post:
+      summary: Submit labels
+      description: >
+        Normally called by the shared labelling UI on the labeller's behalf
+        (magic-link session). Also accepts direct submission for L0/offline flows
+        (a labels file produced without the UI). One Labels document per labeller
+        per pack; resubmission by the same labeller replaces their document.
+      parameters:
+        - { name: packId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Labels' }
+      responses:
+        '201': { description: Labels stored }
+        '400': { description: Validation failed (unknown record/axis ids, missing expertise class), content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+    get:
+      summary: Fetch all labels for a pack
+      description: Returns every labeller's Labels document. Producing platform only.
+      parameters:
+        - { name: packId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Labels documents
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Labels' }
+        '404': { description: Unknown pack }
+
+  /v0/packs/{packId}/verdicts:
+    post:
+      summary: Submit judge verdicts
+      description: >
+        The platform's judge (or a weval run) scores the same records; the service
+        stores them keyed by judge fingerprint. Multiple fingerprints per pack are
+        allowed (judge iterations); each gets its own report.
+      parameters:
+        - { name: packId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/JudgeVerdicts' }
+      responses:
+        '201': { description: Verdicts stored }
+        '400': { description: Validation failed }
+
+  /v0/packs/{packId}/report:
+    get:
+      summary: Fetch the calibration report
+      description: >
+        Computed by the service from stored Labels + JudgeVerdicts — TPR/TNR per
+        axis per split, Rogan-Gladen corrected rates, inter-labeller Krippendorff's
+        α when ≥2 labellers. Never accepts a self-reported report. 409 until at
+        least one Labels and one JudgeVerdicts document exist.
+      parameters:
+        - { name: packId, in: path, required: true, schema: { type: string } }
+        - { name: judge_fingerprint, in: query, required: false, schema: { type: string }, description: Which judge iteration; defaults to latest }
+      responses:
+        '200':
+          description: The computed report
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CalibrationReport' }
+        '409': { description: Not computable yet (missing labels or verdicts) }
+        '404': { description: Unknown pack }

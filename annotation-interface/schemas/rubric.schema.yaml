@@ -1,0 +1,110 @@
+# Rubric — a facilitator-authored quality criterion, before any machine encoding.
+# The INTAKE object: what a symposium or expert review produces, and the input to
+# the criterion text carried by AnnotationPack.axes.
+#
+# Facilitators do NOT author this file. They write in whatever form suits them —
+# prose, a worksheet, a transcript of a session, a marked-up example. A platform
+# maintainer transcribes that into this shape and the facilitator confirms it.
+# (OFL scoping call, 2026-08-04: rubrics are "produced in a format that Artem and
+# Stuart can turn into machine-readable"; the translation is the developers' job.)
+#
+# OFL Annotation & Calibration Interface v0.1 draft — see ../README.md
+
+type: object
+required: [spec_version, id, title, criterion, applies_to, provenance]
+properties:
+  spec_version:
+    type: string
+
+  id:
+    type: string
+    description: Stable slug for this criterion (e.g. "closing_checkpoint_discipline")
+
+  title:
+    type: string
+    description: Short human-readable name, as facilitators would say it
+
+  criterion:
+    type: string
+    description: >
+      The criterion in plain language, written so that a practitioner can apply it
+      to a real turn or transcript and reach pass/fail without further explanation.
+      This exact text is what an AnnotationPack axis carries, what a human labels
+      against, and what a judge scores — one criterion, every rater.
+
+  rationale:
+    type: string
+    description: Why this matters, in the facilitator's own terms. Not scored; preserved so later readers can see the intent behind the wording.
+
+  examples:
+    type: array
+    description: >
+      Worked examples supplied by the author. Load-bearing for translation quality
+      and for few-shot judge prompting — but examples used in a judge prompt must
+      come only from the training split (see calibration-report.schema.yaml).
+    items:
+      type: object
+      required: [text, verdict]
+      properties:
+        text: { type: string, description: The turn or excerpt }
+        verdict: { type: string, enum: [pass, fail] }
+        note: { type: string, description: Why, in the author's words }
+
+  applies_to:
+    type: object
+    required: [unit]
+    description: What the criterion judges — must match a SessionOutput target
+    properties:
+      unit:
+        type: string
+        enum: [final_turn, transcript, cross_session]
+        description: >
+          final_turn = one facilitator turn in context · transcript = a whole
+          session · cross_session = the whole process across all participants'
+          sessions. The third has no SessionOutput representation in v0.1 and is
+          recorded here so authored criteria are not silently lost.
+      phase:
+        type: string
+        description: Where in a process it applies (e.g. "closing", "opening", "any")
+      method:
+        type: string
+        description: OFL method-spec slug, when the criterion is method-specific rather than general
+
+  provenance:
+    type: object
+    required: [authored_by, transcribed_by, confirmed]
+    description: >
+      Who authored the criterion and whether they have seen the transcription.
+      An unconfirmed rubric may be used for internal iteration but MUST NOT be
+      published as facilitator-authored, and a calibration claim resting on it is
+      a claim about the transcriber's judgment, not the facilitator's.
+    properties:
+      authored_by:
+        type: array
+        items: { type: string }
+        description: Facilitator name(s) or pseudonym(s). The people whose expertise this encodes.
+      source:
+        type: string
+        description: Where it came from (e.g. "OFL facilitator symposium 2026-09", "expert review of v0 rubrics")
+      transcribed_by:
+        type: string
+        description: Who turned the authored form into this structured criterion
+      confirmed:
+        type: boolean
+        description: Has the author read this transcription and agreed it says what they meant?
+      confirmed_at:
+        type: string
+        format: date-time
+
+  status:
+    type: string
+    enum: [draft, confirmed, in_use, retired]
+    default: draft
+
+  license:
+    type: string
+    description: License of the criterion text. CC0 for anything published as an OFL standard rubric.
+
+  supersedes:
+    type: string
+    description: Rubric id this replaces, when wording changes after labeller feedback (see labels.schema.yaml criterion_feedback)

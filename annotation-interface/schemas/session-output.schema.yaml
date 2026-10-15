@@ -1,0 +1,92 @@
+# SessionOutput — a real platform session (or excerpt) in canonical interchange form.
+# Extends weval's `messages` shape (role/content) with target designation + provenance.
+# OFL Annotation & Calibration Interface v0.1 draft — see ../README.md
+
+type: object
+required: [spec_version, id, platform, messages, target, scrub, consent]
+properties:
+  spec_version:
+    type: string
+    description: Interface spec version this object conforms to (semver, e.g. "0.1.0")
+
+  id:
+    type: string
+    description: Platform-scoped stable id for this session output (opaque; used by Labels/JudgeVerdicts to reference the record)
+
+  platform:
+    type: string
+    description: Identifier of the producing platform (e.g. "harmonica", "crown-shy")
+
+  method:
+    type: string
+    description: OFL method-spec slug this session ran, when known (links the record to the method registry)
+
+  session_topic:
+    type: string
+    description: Short scrubbed topic/context line shown to labellers
+
+  messages:
+    type: array
+    minItems: 1
+    description: Ordered conversation, weval-compatible role/content form
+    items:
+      type: object
+      required: [role, content]
+      properties:
+        role:
+          type: string
+          enum: [user, assistant, system]
+        content:
+          type: string
+
+  target:
+    type: string
+    enum: [final_turn, transcript]
+    description: >
+      What is under evaluation. final_turn = the last assistant message is the object,
+      prior messages are context (turn-in-context). transcript = the whole conversation
+      is the object (session-level axes).
+
+  retrieved_context:
+    type: array
+    description: >
+      PROPOSED (pending Crown Shy review): retrieval attachments for
+      knowledge-encountering sessions — what the system retrieved to ground its turns.
+    items:
+      type: object
+      required: [content]
+      properties:
+        source:
+          type: string
+          description: Scrubbed source label (never a raw URL to private material)
+        content:
+          type: string
+
+  scrub:
+    type: object
+    required: [attestation]
+    description: PII posture. The platform scrubs BEFORE anything leaves it.
+    properties:
+      attestation:
+        type: string
+        description: What pass the content went through (e.g. "harmonica scrubPII v3 + manual review 2026-08-04")
+      residual_policy:
+        type: string
+        description: How residual names are handled (e.g. "public intellectual references kept; private third parties redacted to [name]")
+
+  consent:
+    type: string
+    enum: [research_consented, anonymized_public, private_restricted]
+    description: Consent posture of the underlying conversation data
+
+  license:
+    type: string
+    description: License of THIS DATA (not the spec). Often inherited from the pack.
+
+  provenance:
+    type: object
+    description: Optional sampling provenance (reproducibility — see AnnotationPack.manifest)
+    properties:
+      sampled_at: { type: string, format: date-time }
+      date_range: { type: string, description: "Absolute source range, e.g. 2026-02-01..2026-07-31" }
+      bucket: { type: string, description: "Sampling stratum label, e.g. likely-fail | random" }

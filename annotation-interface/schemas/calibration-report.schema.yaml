@@ -1,0 +1,102 @@
+# CalibrationReport — computed judge↔human validity for one pack + judge fingerprint.
+# Computed by the OFL service FROM stored Labels + JudgeVerdicts — never self-reported.
+# This is the companion artifact a published weval blueprint cannot produce:
+# weval reports judge-vs-judge RELIABILITY; this reports judge-vs-human VALIDITY.
+# OFL Annotation & Calibration Interface v0.1 draft — see ../README.md
+
+type: object
+required: [spec_version, pack_id, judge_fingerprint, computed_at, axes]
+properties:
+  spec_version:
+    type: string
+
+  pack_id:
+    type: string
+
+  judge_fingerprint:
+    type: string
+    description: The JudgeVerdicts.judge.fingerprint this report is valid for
+
+  computed_at:
+    type: string
+    format: date-time
+
+  labellers:
+    type: array
+    description: Who the ground truth came from (id + expertise class, echoed from Labels)
+    items:
+      type: object
+      required: [id, expertise]
+      properties:
+        id: { type: string }
+        expertise: { type: string }
+
+  splits:
+    type: object
+    description: >
+      How records were assigned to train/dev/test (disjoint; few-shot examples may
+      come only from train). Assignment must be derivable from pack seed, not ad hoc.
+    properties:
+      seed: { type: integer }
+      counts:
+        type: object
+        properties:
+          train: { type: integer }
+          dev: { type: integer }
+          test: { type: integer }
+
+  axes:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required: [axis, n, tpr, tnr]
+      properties:
+        axis: { type: string }
+        split:
+          type: string
+          enum: [dev, test]
+          description: Which split these numbers were computed on (report both, one entry each)
+        n: { type: integer }
+        class_balance:
+          type: object
+          properties:
+            pass: { type: integer }
+            fail: { type: integer }
+        tpr:
+          type: number
+          description: Judge sensitivity vs human ground truth (target ≥ 0.90 on dev)
+        tnr:
+          type: number
+          description: Judge specificity vs human ground truth (target ≥ 0.90 on dev)
+        threshold:
+          type: number
+          description: Binarization threshold the TPR/TNR were computed at
+        observed_pass_rate:
+          type: number
+        corrected_pass_rate:
+          type: number
+          description: "Rogan-Gladen: (observed + TNR - 1) / (TPR + TNR - 1), clipped to [0,1]"
+        corrected_ci_95:
+          type: array
+          items: { type: number }
+          minItems: 2
+          maxItems: 2
+          description: Bootstrap 95% CI on the corrected rate
+
+  inter_labeller:
+    type: array
+    description: Human-vs-human agreement, present when >= 2 labellers covered an axis
+    items:
+      type: object
+      required: [axis, alpha, labeller_count]
+      properties:
+        axis: { type: string }
+        alpha:
+          type: number
+          description: Krippendorff's α (ordinal). Same statistic weval uses judge-vs-judge, applied human-vs-human
+        labeller_count: { type: integer }
+        interpretation:
+          type: string
+          enum: [reliable, tentative, unreliable]
+          description: "weval bands: ≥0.800 reliable · 0.667–0.800 tentative · <0.667 unreliable"

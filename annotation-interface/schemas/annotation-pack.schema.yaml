@@ -1,0 +1,85 @@
+# AnnotationPack — a labelling assignment: records + the criteria to rate them against.
+# The machine-readable form of calibration/<axis>/pack.md.
+# OFL Annotation & Calibration Interface v0.1 draft — see ../README.md
+
+type: object
+required: [spec_version, id, manifest, axes, records]
+properties:
+  spec_version:
+    type: string
+
+  id:
+    type: string
+    description: Globally unique pack id (platform + slug + version, e.g. "harmonica/closing-2026-08/1")
+
+  manifest:
+    type: object
+    required: [platform, created_at, license]
+    description: Reproducibility + presentation metadata
+    properties:
+      platform: { type: string }
+      created_at: { type: string, format: date-time }
+      title: { type: string, description: "Shown as the labelling surface heading" }
+      intro:
+        type: array
+        items: { type: string }
+        description: Paragraphs shown to labellers before the records (what this is, what happens with answers, time estimate)
+      date_range:
+        type: string
+        description: ABSOLUTE source range the records were sampled from (never a relative window)
+      seed:
+        type: integer
+        description: Sampling seed. date_range + seed + platform sampler version must reproduce a byte-identical record set
+      sampler_version:
+        type: string
+        description: Version/commit of the producing sampler
+      license:
+        type: string
+        description: License of the pack DATA (the spec is CC0; the data usually is not)
+      estimated_minutes: { type: integer }
+
+  axes:
+    type: array
+    minItems: 1
+    description: >
+      The rubric axes labellers rate. Criterion text is what BOTH the human and the
+      judge see. Each axis SHOULD derive from a confirmed Rubric (see
+      ./rubric.schema.yaml) — the criterion text is copied from it verbatim, not
+      rewritten here, so the human, the judge and the blueprint all rate the same words.
+    items:
+      type: object
+      required: [id, criterion]
+      properties:
+        id:
+          type: string
+          description: Axis slug, matching the source Rubric's id (e.g. "closing_checkpoint_discipline")
+        criterion:
+          type: string
+          description: >
+            Plain-language criterion, verbatim from the source Rubric, in weval point
+            form — the exact text a weval `should` point would carry. Pass/fail
+            semantics must be inferable from it.
+        rubric_ref:
+          type: string
+          description: >
+            Where the authored Rubric lives (path or URL). Its provenance block is what
+            makes "facilitator-authored" a checkable claim rather than an assertion;
+            an axis with no rubric_ref is developer-authored and should be labelled as such.
+        authored_by:
+          type: array
+          items: { type: string }
+          description: Echoed from the source Rubric's provenance, so a labeller can see whose criterion they are applying
+        critique_invited:
+          type: boolean
+          default: true
+          description: >
+            Whether labellers are asked to challenge the criterion wording itself.
+            Disagreement lands in Labels.criterion_feedback and feeds back to the
+            Rubric author (who may supersede it) — the loop that keeps the criteria
+            facilitator-owned rather than frozen at first transcription.
+
+  records:
+    type: array
+    minItems: 1
+    items:
+      $ref: "./session-output.schema.yaml"
