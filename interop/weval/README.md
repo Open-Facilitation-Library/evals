@@ -39,6 +39,12 @@ or aggregation.
 | Public Evaluation API | Source-confirmed, not run | Accepts canonical blueprints and bypasses the CLI validator |
 | Hosted Weval / WeVal Studio behavior | Not tested | No conclusion |
 
+The [scoring-scope contract](../../docs/scoring-scope.md) and
+[`scoring-scope-fixtures.json`](./scoring-scope-fixtures.json) reuse this evidence
+to declare final-turn and whole-transcript targets separately from context.
+The whole-transcript record is explicitly unsupported and has a null score;
+it does not extend or repeat this probe.
+
 ## Question
 
 Weval's `docs/BLUEPRINT_FORMAT.md` says:

@@ -70,6 +70,16 @@ Pipeline: **parse** (auto-detect format) → **anonymize** (names, PII) → **an
 
 See `src/` for implementation. Add your OpenAI key to `.env`.
 
+## Scored Target Attribution
+
+Results must distinguish the subject being scored from the conversation supplied
+as context. The [scoring-scope contract](./docs/scoring-scope.md) declares an exact
+turn, window, extracted answer, or whole transcript, with explicit aggregation,
+support status, and null missing measurements. Its synthetic fixtures reuse the
+recorded weval evidence; this does not add a results exporter or change the
+transcript processor. Run the offline contract tests with `npm test` after
+installing dependencies.
+
 ## Judge Calibration
 
 Signatures are comparative, but some quality questions still reduce to a judgment ("is this a good
