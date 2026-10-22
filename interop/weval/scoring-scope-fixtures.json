@@ -1,0 +1,33 @@
+{
+  "final_turn": {
+    "scope_version": "0.1.0",
+    "context": {
+      "transcript_ref": "interop/weval/transcript-scope-probe-result.json#/config/prompts/0/messages",
+      "selector": { "kind": "whole_transcript" }
+    },
+    "target": { "kind": "turn", "turn_index": 3 },
+    "aggregation": { "unit": "target", "operation": "none", "missing_policy": "propagate" },
+    "support": { "status": "supported", "reason": null },
+    "measurement": { "value": 0, "missing_reason": null },
+    "source_evidence": ["interop/weval/README.md"],
+    "source_result_ref": "interop/weval/transcript-scope-probe-result.json#/evaluationResults/llmCoverageScores/early-turn-probe/anthropic:claude-3-5-haiku[temp:0]/avgCoverageExtent"
+  },
+  "whole_transcript": {
+    "scope_version": "0.1.0",
+    "context": {
+      "transcript_ref": "interop/weval/transcript-scope-probe-result.json#/config/prompts/0/messages",
+      "selector": { "kind": "whole_transcript" }
+    },
+    "target": { "kind": "whole_transcript" },
+    "aggregation": { "unit": "target", "operation": "none", "missing_policy": "propagate" },
+    "support": {
+      "status": "unsupported",
+      "reason": "The measured, CLI-guard-patched weval pipeline scores only the final authored assistant turn; it does not score the whole transcript."
+    },
+    "measurement": {
+      "value": null,
+      "missing_reason": "No whole-transcript measurement exists in the recorded probe. The final-turn score must not be reused for this target."
+    },
+    "source_evidence": ["interop/weval/README.md"]
+  }
+}

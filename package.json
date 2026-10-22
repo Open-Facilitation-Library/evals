@@ -4,7 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "process": "tsx src/process-transcript.ts"
+    "process": "tsx src/process-transcript.ts",
+    "test": "node --test"
   },
   "dependencies": {
     "js-yaml": "^4.1.0",
@@ -12,6 +13,7 @@
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
+    "ajv": "^8.20.0",
     "tsx": "^4.19.0",
     "typescript": "^5.7.0"
   }
