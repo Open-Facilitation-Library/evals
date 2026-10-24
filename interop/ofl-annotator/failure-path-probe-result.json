@@ -1,0 +1,64 @@
+{
+  "captured_at": "2026-10-24T19:13:47.532Z",
+  "implementation_commit": "c892056d203fbc11af6b3d903ae6874c39fb9d8d",
+  "implementation_files": {
+    "src/annotate.ts": "b58ea75e93f662146dfbc1867e88be2e7a04af9ced831bbe5ede19bfd95f9360",
+    "src/signature.ts": "fc52de82c01e71d67ff6117d42724519107d2173da73f86acf74c012c6b2a061"
+  },
+  "probe_sha256": "66b02ee4bf8903541d36ac980580a3d22f6fd3760646748e1950fc70fbc38e43",
+  "environment": {
+    "node": "v22.18.0",
+    "platform": "darwin"
+  },
+  "scope": "Annotation decoding/merge and signature consumption with fixed SDK responses; no live API, model quality, timeout, 429/5xx retry, selector or conformance adapter exercised.",
+  "fresh_model_calls": 0,
+  "transport_attempts": 0,
+  "stubbed_completion_calls": 4,
+  "observations": [
+    {
+      "case": "missing-turn",
+      "outcome": "unmarked-default-tags",
+      "tags": {
+        "why": [
+          "information-sharing"
+        ],
+        "how": [
+          "instruction"
+        ],
+        "who": "participant-to-participant"
+      },
+      "signature": {
+        "why": {
+          "information-sharing": 1
+        },
+        "how": {
+          "instruction": 1
+        },
+        "who": {
+          "participant-to-participant": 1
+        }
+      }
+    },
+    {
+      "case": "unknown-taxonomy-labels",
+      "outcome": "accepted-without-tag-validation",
+      "tags": {
+        "why": [
+          "UNKNOWN_WHY"
+        ],
+        "how": [
+          "UNKNOWN_HOW"
+        ],
+        "who": "UNKNOWN_WHO"
+      }
+    },
+    {
+      "case": "malformed-json",
+      "outcome": "error-propagated"
+    },
+    {
+      "case": "provider-401",
+      "outcome": "error-propagated"
+    }
+  ]
+}

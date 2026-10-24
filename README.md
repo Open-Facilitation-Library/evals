@@ -84,6 +84,10 @@ The [process-scope proposal](./docs/process-scope-proposal.md) extends the desig
 linked sessions, actors, events, artifacts and handoffs, with explicit coverage gaps. It is
 non-normative and adds no selector, runner or instrument support to the existing contract.
 
+The [instrument-support inventory](./docs/instrument-support.md) separates measured native
+capabilities from source/documentation claims and unverified v0.3 bindings. Its bounded annotation
+failure-path probe uses fixed SDK responses and blocks provider transport.
+
 ## Judge Calibration
 
 Signatures are comparative, but some quality questions still reduce to a judgment ("is this a good
