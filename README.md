@@ -80,6 +80,10 @@ recorded weval evidence; this does not add a results exporter or change the
 transcript processor. Run the offline contract tests with `npm test` after
 installing dependencies.
 
+The [process-scope proposal](./docs/process-scope-proposal.md) extends the design discussion to
+linked sessions, actors, events, artifacts and handoffs, with explicit coverage gaps. It is
+non-normative and adds no selector, runner or instrument support to the existing contract.
+
 ## Judge Calibration
 
 Signatures are comparative, but some quality questions still reduce to a judgment ("is this a good
