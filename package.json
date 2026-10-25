@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "process": "tsx src/process-transcript.ts",
-    "test": "node --test"
+    "test": "node --import tsx --test"
   },
   "dependencies": {
     "js-yaml": "^4.1.0",

@@ -70,6 +70,11 @@ Pipeline: **parse** (auto-detect format) → **anonymize** (names, PII) → **an
 
 See `src/` for implementation. Add your OpenAI key to `.env`.
 
+Annotations must cover every turn in each batch exactly once and use the canonical
+prompt's tags. Missing or invalid output stops processing before signature computation;
+no default observations are invented. See [annotation validation](./docs/annotation-validation.md)
+for the rules, offline regression checks and historical audit boundary.
+
 ## Scored Target Attribution
 
 Results must distinguish the subject being scored from the conversation supplied
