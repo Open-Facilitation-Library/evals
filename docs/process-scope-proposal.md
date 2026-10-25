@@ -55,6 +55,25 @@ Required units come from the selected plan/criterion coverage, not an automatic 
 of every actor, stage and metric. An adapter records how each expected set was resolved. It must
 not shrink the expected set to the rows for which scores happen to exist.
 
+For each expected set, distinguish:
+
+- **Resolved, nonempty:** retain the exact required members and the versioned sources and
+  resolution evidence that establish them. Match observations and permitted exclusions to that set.
+- **Resolved, empty:** retain the versioned plan/criterion rule and evidence that justify no
+  required members, such as a conditional activity that did not apply. An absent roster, missing
+  activity record or failed lookup cannot supply that justification. A rule requiring a nonempty
+  cohort cannot be satisfied by declaring an empty set.
+- **Unresolved:** retain the controlled source references, known members if any, and the reason
+  the full expected set could not be established. Unknown expected or missing counts remain
+  unavailable; they must not become zero or use the observed subset as the denominator.
+
+An unresolved required set prevents a whole-process score under the selected coverage policy.
+Independent findings with their own resolved scopes remain reportable. A justified empty set has
+zero required members, but supplies no `0/0` ratio, automatic 100% coverage or default pass. Apply
+the selected criterion's explicit empty-set/applicability rule. If it has none, report no
+measurement with the interpretation gap; do not invent an answer or treat the set as unresolved.
+This distinction adds no result-status value to conformance v0.3.
+
 ## Information flow and handoffs
 
 For each assessed handoff, identify:
@@ -203,6 +222,10 @@ These are expected distinctions for review, not passed behavioral tests:
 | One logical stage spans private interviews and a shared board | Include the declared activities and their information-flow links; no chat-only approximation. |
 | Host advances at approved quorum | Assess against the chosen variant; retain unfinished actors and completed-only source membership. |
 | Later withdrawal changes the denominator | New scope revision; prior boundary and required approval remain pinned. |
+| The expected roster cannot be resolved, but six responses are available | Retain the six observed responses and the resolution gap; the required denominator is unknown, not six or zero, and no whole-process score is available. |
+| A conditional activity has no required members under its pinned applicability rule | Record the justified empty set and apply that criterion's declared interpretation; do not manufacture a coverage ratio or pass. |
+| A criterion requires a nonempty cohort, but the manifest declares no required members | The empty declaration cannot establish complete coverage or satisfy the cohort requirement. |
+| An expected set is justified as empty, but its criterion has no empty-set interpretation | Keep the set resolved and empty; report no measurement with the interpretation gap. |
 | A summary omits a minority position | Assess the exact artifact against its full contributing inputs; final-turn fluency is insufficient. |
 | Correct source instructions but wrong-person memory delivery | Preserve the observed routing violation independently of source/wording checks. |
 | Artifact exists but delivery was not observed | Availability does not satisfy a delivery requirement. |
