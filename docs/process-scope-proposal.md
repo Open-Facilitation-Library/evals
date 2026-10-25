@@ -87,8 +87,30 @@ For each assessed handoff, identify:
 
 A process map can contain source declarations and observed execution, with their bases visible.
 Only the latter can establish an exercised routing/transition claim. Missing events must not be
-invented from polished facilitator wording or a plausible final synthesis. An unobserved path is
-a coverage gap; an observed leak or wrong-person delivery is a negative finding.
+invented from polished facilitator wording or a plausible final synthesis. An unobserved path
+with insufficient capture evidence remains a coverage gap; an observed leak or wrong-person
+delivery is a negative finding.
+
+An absent event can establish that an action did not occur only when the assessment pins:
+
+1. The applicable requirement, actors, artifact revision, allowed channels and due boundary.
+2. The observation contract making the source authoritative for that action, including why a
+   successful occurrence would necessarily be recorded there or reflected in its authoritative state.
+3. Evidence that the selected capture/state is complete for those actors, channels and event types
+   through the due boundary, with relevant revisions and closure/watermark receipts. An empty
+   query, an export labeled complete or wall-clock timestamps alone do not establish this.
+
+Within that evidenced boundary, a required action's non-occurrence supports a scoped negative
+finding when the instrument supports the assessment. For example, complete authoritative delivery
+records through the required deadline can establish non-delivery to a named recipient. Missing
+read receipts alone do not establish non-delivery, nor does one channel's log exclude delivery
+through another permitted channel. Before the action is due, absence alone establishes no violation.
+
+Record the negative finding and its supporting capture/state evidence without fabricating a
+positive event. A supported completed negative answer is measured evidence, not a missing result;
+keep successful-action counts separate from evidence coverage. If any required premise above
+is unresolved, retain a coverage gap and reason instead. Other required evidence gaps still
+prevent a whole-process score under the selected policy.
 
 ## Cohort, quorum and incomplete participation
 
@@ -102,10 +124,12 @@ Distinguish these cases:
 - **Permitted exclusion:** an unfinished response is outside an explicitly declared completed-only
   source snapshot. Retain the actor/state, policy and exclusion reason; do not fabricate a response.
 - **Required evidence missing:** the selected claim needs that actor's delivery event, contribution
-  or outcome, and no authorized observation is available. Retain a gap; quorum does not erase it.
+  or outcome, and neither an authorized observation nor sufficient evidence of non-occurrence is
+  available. Retain a gap; quorum does not erase it.
 - **Observed violation:** all-submitted was the selected policy and advancement occurred with
-  unfinished actors, or a handoff delivered another actor's memory. Report the scoped negative
-  result when the relevant evidence and instrument support exist.
+  unfinished actors, a handoff delivered another actor's memory, or a required action demonstrably
+  did not occur under the evidence rule above. Report the scoped negative result when the relevant
+  evidence and instrument support exist.
 
 Evaluation coverage does not impose an extra application progression barrier. A host can advance
 under a valid quorum policy while an evaluator still lacks evidence for a broader claim.
@@ -208,6 +232,8 @@ observed for only 6/10 actors. The two unfinished responses are permitted source
 four missing delivery observations are gaps for the all-panel delivery claim. Valid source and
 advancement findings remain reportable, but there is no all-panel delivery or whole-process score.
 This bounded handoff also makes no claim about later stages of the eventual process.
+No authoritative evidence of non-delivery is stipulated for the four actors with missing
+observations; their non-delivery cannot be inferred from this example's counts.
 
 Under an all-submitted variant, the same observed advancement at 8/10 would instead support a
 negative barrier finding. The expected contract changes; the evaluator must not silently apply
@@ -229,6 +255,10 @@ These are expected distinctions for review, not passed behavioral tests:
 | A summary omits a minority position | Assess the exact artifact against its full contributing inputs; final-turn fluency is insufficient. |
 | Correct source instructions but wrong-person memory delivery | Preserve the observed routing violation independently of source/wording checks. |
 | Artifact exists but delivery was not observed | Availability does not satisfy a delivery requirement. |
+| A delivery event is absent from a partial export | Retain a coverage gap; the absence does not establish non-delivery. |
+| Authoritative capture covers all permitted delivery channels through the required deadline, with no delivery to a named recipient | With the observation contract and completeness evidence resolved, report a supported scoped negative finding; do not fabricate a delivery event or classify the negative answer as missing. |
+| No delivery is recorded, but the required deadline has not been reached | Absence alone establishes no violation; keep the due boundary explicit. |
+| Read receipts are absent, or only one of several permitted channels is captured | Do not infer non-delivery; the observable or channel coverage is insufficient for that claim. |
 | Four required delivery observations are missing | Keep scoped findings, named gaps and the original denominator; no whole-process score. |
 | All available turn scores pass, but an earlier session is missing | Do not infer process conformance from the available subset. |
 | Clock timestamps conflict across sources | Require evidenced ordering or retain uncertainty; do not infer causality by sorting. |
