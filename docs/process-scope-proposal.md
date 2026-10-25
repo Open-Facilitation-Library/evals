@@ -1,6 +1,8 @@
 # Process scope across sessions, events and artifacts
 
 **Status:** non-normative design proposal, `process_scope_version: "0.1-proposal.1"`.
+The incomplete-coverage policy below was selected on 2026-10-25. The remaining
+manifest/coverage semantics still require review before contract adoption.
 This defines a proposed attribution/coverage boundary, not an executable schema, resolver, runner
 or instrument capability. It neither widens [scoring-scope 0.1.0](scoring-scope.md) nor changes the
 transcript processor. Actual instrument support remains in
@@ -113,10 +115,10 @@ Neither supplies a whole-process measurement; retain the reason and the narrower
 
 ## Results and aggregation boundary
 
-**Recommended first-version default:** required coverage gaps prevent a whole-process score.
+**Selected first-version policy (2026-10-25):** required coverage gaps prevent a whole-process score.
 Retain all valid scoped results and observed violations prominently, alongside the unmeasured
 requirements. Missing data cannot erase a known violation or become a default pass, false or zero.
-This is a proposal for review, not an implemented reporting policy.
+This policy is agreed for the design; executable reporting enforcement is not implemented here.
 
 Report a collection of criterion assessments indexed by their selected stage/activity, actor/cohort,
 boundary, binding and evidence class. Keep completed negative answers separate from failed or
@@ -131,7 +133,7 @@ Method fidelity, interaction preferences, runtime behavior and participant outco
 
 An exploratory partial aggregate would require a separately declared policy and explicit original
 denominator/exclusions. It cannot represent the whole-process assessment requested here. This
-alternative remains a review choice; the default above does not adopt it.
+alternative is outside the selected first-version policy.
 
 ## Worked boundary example
 
@@ -221,7 +223,7 @@ A reference grants no permission to fetch or publish its contents. Keep actor id
 participant responses, protected method material and derived projections under their existing
 access/consent restrictions. Checked-in examples use synthetic data only.
 
-Before adoption, review these manifest/coverage semantics and choose the incomplete-coverage
-policy. Any executable schema, bounded selector implementation, adapter or aggregation policy is a
-separate implementation step with positive/negative fixtures. No provider calls, new benchmark
-runs or production changes are authorized by this design.
+Before contract adoption, review the remaining manifest/coverage semantics. The incomplete-coverage
+policy is selected above. Any executable schema, bounded selector implementation, adapter or
+aggregation policy is a separate implementation step with positive/negative fixtures. No provider
+calls, new benchmark runs or production changes are authorized by this design.
