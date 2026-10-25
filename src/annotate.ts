@@ -45,18 +45,89 @@ function fillTemplate(template: string, vars: Record<string, string>): string {
   return result;
 }
 
-interface AnnotationResult {
-  turn: number;
-  why: string[];
-  how: string[];
-  who: string;
+type Taxonomy = Record<keyof WhwTags, Set<string>>;
+
+// Validate against the same canonical vocabulary sent to the model, rather than
+// maintaining a second list that can drift from prompts/whw-annotate-system.md.
+function parseTaxonomy(systemPrompt: string): Taxonomy {
+  const taxonomy: Taxonomy = { why: new Set(), how: new Set(), who: new Set() };
+  let inTaxonomy = false;
+  let dimension: keyof WhwTags | undefined;
+
+  for (const line of systemPrompt.split(/\r?\n/)) {
+    if (line.startsWith('## ')) {
+      inTaxonomy = line === '## Tag Taxonomy';
+      dimension = undefined;
+    } else if (inTaxonomy && line.startsWith('### ')) {
+      const heading = /^### (Why|How|Who)\b/.exec(line);
+      dimension = heading ? heading[1].toLowerCase() as keyof WhwTags : undefined;
+    } else if (inTaxonomy && dimension) {
+      const label = /^- `([^`]+)`/.exec(line);
+      if (label) taxonomy[dimension].add(label[1]);
+    }
+  }
+
+  if (Object.values(taxonomy).some(labels => labels.size === 0)) {
+    throw new Error('Canonical WHoW prompt must define Why, How and Who tag lists');
+  }
+  return taxonomy;
+}
+
+function validateTagList(value: unknown, allowed: Set<string>, field: string, turn: number): string[] {
+  if (!Array.isArray(value) || value.length === 0
+    || value.some(label => typeof label !== 'string' || !allowed.has(label))) {
+    throw new Error(`Invalid annotation for turn ${turn}: ${field} must be a nonempty array of canonical tags`);
+  }
+  if (new Set(value).size !== value.length) {
+    throw new Error(`Invalid annotation for turn ${turn}: ${field} contains duplicate tags`);
+  }
+  return value;
+}
+
+function validateAnnotations(
+  annotations: unknown[],
+  batchStart: number,
+  batchEnd: number,
+  taxonomy: Taxonomy,
+): Map<number, WhwTags> {
+  const validated = new Map<number, WhwTags>();
+  for (const annotation of annotations) {
+    if (!annotation || typeof annotation !== 'object' || Array.isArray(annotation)) {
+      throw new Error('Invalid annotation: each entry must be an object');
+    }
+    const { turn, why, how, who } = annotation as Record<string, unknown>;
+    if (typeof turn !== 'number' || !Number.isInteger(turn)) {
+      throw new Error('Invalid annotation: turn must be an integer');
+    }
+    if (turn < batchStart || turn >= batchEnd) {
+      throw new Error(`Invalid annotation: turn ${turn} is outside batch ${batchStart}–${batchEnd - 1}`);
+    }
+    if (validated.has(turn)) {
+      throw new Error(`Invalid annotation: duplicate turn ${turn}`);
+    }
+    const validWhy = validateTagList(why, taxonomy.why, 'why', turn);
+    const validHow = validateTagList(how, taxonomy.how, 'how', turn);
+    if (typeof who !== 'string' || !taxonomy.who.has(who)) {
+      throw new Error(`Invalid annotation for turn ${turn}: who must be one canonical tag`);
+    }
+    validated.set(turn, { why: validWhy, how: validHow, who });
+  }
+
+  const missing = [];
+  for (let turn = batchStart; turn < batchEnd; turn++) {
+    if (!validated.has(turn)) missing.push(turn);
+  }
+  if (missing.length) {
+    throw new Error(`Invalid annotations: missing turns ${missing.join(', ')} in batch ${batchStart}–${batchEnd - 1}`);
+  }
+  return validated;
 }
 
 async function callLlm(
   client: OpenAI,
   systemPrompt: string,
   userPrompt: string,
-): Promise<AnnotationResult[]> {
+): Promise<unknown[]> {
   for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
     try {
       const response = await client.chat.completions.create({
@@ -72,8 +143,9 @@ async function callLlm(
       const content = response.choices[0]?.message?.content;
       if (!content) throw new Error('Empty LLM response');
 
-      const parsed = JSON.parse(content);
-      const annotations: AnnotationResult[] = parsed.annotations || parsed;
+      const parsed: unknown = JSON.parse(content);
+      const annotations = Array.isArray(parsed) ? parsed
+        : parsed && typeof parsed === 'object' ? (parsed as Record<string, unknown>).annotations : undefined;
 
       if (!Array.isArray(annotations)) {
         throw new Error('LLM response is not an array');
@@ -108,6 +180,7 @@ export async function annotate(
 
   const client = new OpenAI({ apiKey });
   const systemPrompt = loadPrompt('whw-annotate-system.md');
+  const taxonomy = parseTaxonomy(systemPrompt);
   const userTemplate = loadPrompt('whw-annotate.md');
 
   const results: Map<number, WhwTags> = new Map();
@@ -135,23 +208,17 @@ export async function annotate(
     });
 
     const annotations = await callLlm(client, systemPrompt, userPrompt);
+    const validated = validateAnnotations(annotations, batchStart, batchEnd, taxonomy);
 
-    for (const ann of annotations) {
-      results.set(ann.turn, {
-        why: ann.why || [],
-        how: ann.how || [],
-        who: ann.who || 'participant-to-participant',
-      });
+    for (const [turn, tags] of validated) {
+      results.set(turn, tags);
     }
   }
 
   // Merge annotations with turns
-  return turns.map((turn, i): AnnotatedTurn => ({
-    ...turn,
-    tags: results.get(i) || {
-      why: ['information-sharing'],
-      how: ['instruction'],
-      who: 'participant-to-participant',
-    },
-  }));
+  return turns.map((turn, i): AnnotatedTurn => {
+    const tags = results.get(i);
+    if (!tags) throw new Error(`Missing validated annotation for turn ${i}`);
+    return { ...turn, tags };
+  });
 }
