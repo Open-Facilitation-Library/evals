@@ -85,9 +85,11 @@ recorded weval evidence; this does not add a results exporter or change the
 transcript processor. Run the offline contract tests with `npm test` after
 installing dependencies.
 
-The [process-scope proposal](./docs/process-scope-proposal.md) extends the design discussion to
-linked sessions, actors, events, artifacts and handoffs, with explicit coverage gaps. It is
-non-normative and adds no selector, runner or instrument support to the existing contract.
+The [process-scope v0.1.0 contract](./docs/process-scope-v0.1.md) defines attribution and coverage
+across linked sessions, actors, events, artifacts and handoffs. Required evidence gaps prevent a
+whole-process score while valid scoped findings and violations remain reportable. This design
+contract adds no executable selector, runner or instrument support; the
+[adoption note](./docs/process-scope-proposal.md) preserves the reviewed proposal's provenance.
 
 The [instrument-support inventory](./docs/instrument-support.md) separates measured native
 capabilities from source/documentation claims and unverified v0.3 bindings. Its bounded annotation
